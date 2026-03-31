@@ -10,20 +10,24 @@ st.set_page_config(
 )
 
 # 2. INICIALIZAÇÃO DA CONEXÃO
-# Mantemos para que a página de 'Inclusão' consiga gravar os dados depois
 try:
     conn = st.connection("gsheets", type=GSheetsConnection)
+    
+    # Aqui dizemos explicitamente para usar a 'url' que você criou no secrets
+    df = conn.read(spreadsheet=st.secrets["connections"]["gsheets"]["url"])
+    
+    st.success("Conectado com sucesso!")
+    #st.write("Dados da planilha:")
+    #st.dataframe(df.head()) # Mostra as primeiras linhas para confirmar
+    
 except Exception as e:
-    st.error("Erro na conexão com o Sheets. Verifique o secrets.")
-
-# Para ler os dados (o parâmetro spreadsheet vai aqui, se não estiver no secrets)
-df = conn.read()
+    st.error(f"Erro ao ler planilha: {e}")
 
 # 3. LOGIN DIRETO NO CÓDIGO
 def verificar_login(usuario, senha):
     # Defina aqui os usuários e senhas desejados
     acesso = {
-        "GIUSEPPE": "1234",
+        "GIUSEPPE": "ZEPPE",
         "GIOVANNA": "4321"
     }
     
